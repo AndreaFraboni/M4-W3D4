@@ -1,0 +1,51 @@
+using UnityEngine;
+
+public class PlayerController : MonoBehaviour
+{
+    [SerializeField] float _speed = 5f;
+    [SerializeField] float _smooth = 10f;
+
+    private Rigidbody _rb;
+    private float horizontal, vertical;
+    private Vector3 move;
+
+    private void Awake()
+    {
+        if (_rb == null) _rb = GetComponent<Rigidbody>();
+    }
+
+    void Update()
+    {
+        CheckInput();
+    }
+
+    private void FixedUpdate()
+    {
+        Move();
+        Rotation();
+    }
+
+    private void CheckInput()
+    {
+        horizontal = Input.GetAxisRaw("Horizontal");
+        vertical = Input.GetAxisRaw("Vertical");
+
+        Vector3 inputMove = new Vector3(horizontal, 0, vertical);
+
+        if (inputMove.sqrMagnitude > 1f) inputMove.Normalize();
+
+        move = Vector3.Lerp(move, inputMove, _smooth * Time.deltaTime);
+    }
+
+    private void Move()
+    {
+        _rb.MovePosition(transform.position + move * (_speed * Time.deltaTime));
+    }
+
+    private void Rotation()
+    {
+        if (move != Vector3.zero) transform.forward = move;
+    }
+
+}
+
