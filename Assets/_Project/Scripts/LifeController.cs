@@ -44,7 +44,7 @@ public class LifeController : MonoBehaviour
         AddHp(-damage);
     }
 
-    private void Defeated()
+    public void Defeated()
     {
         Destroy(gameObject);
     }

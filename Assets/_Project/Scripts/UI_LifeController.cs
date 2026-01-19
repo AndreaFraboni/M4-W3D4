@@ -2,7 +2,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 
-public class UI_LifeController : MonoBehaviour
+public class UI_EnemyLifeController : MonoBehaviour
 {
     [SerializeField] private Image _bar_lifeBarFillable;
     [SerializeField] private TextMeshProUGUI _lifeText;
