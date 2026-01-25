@@ -7,12 +7,12 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private float _rotationSpeed = 5f;
 
     private Rigidbody _rb;
-    private float horizontal, vertical;
+    private float horizontal, vertical = 0f;
 
     private PlayerShooterController _shooter;
     private Camera _cam;
 
-    private Vector3 move;
+    private Vector3 move = Vector3.zero;
 
     private void Awake()
     {
@@ -38,14 +38,25 @@ public class PlayerController : MonoBehaviour
     {
         horizontal = Input.GetAxisRaw("Horizontal");
         vertical = Input.GetAxisRaw("Vertical");
+
         Vector3 inputMove = new Vector3(horizontal, 0, vertical);
+
         if (inputMove.sqrMagnitude > 1f) inputMove.Normalize();
+
         move = Vector3.Lerp(move, inputMove, _smooth * Time.deltaTime);
+
+        if (move.sqrMagnitude < 0.0001f) move = Vector3.zero;
     }
 
+    //private void Move()
+    //{
+    //    _rb.MovePosition(transform.position + move * (_speed * Time.fixedDeltaTime));
+    //}
     private void Move()
     {
-        _rb.MovePosition(transform.position + move * (_speed * Time.fixedDeltaTime));
+        Vector3 current = _rb.velocity;
+        Vector3 desired = move * _speed;
+        _rb.velocity = new Vector3(desired.x, current.y, desired.z);
     }
 
     private void Rotation()
